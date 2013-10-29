@@ -68,7 +68,7 @@ def processMovieFiles(sampleFileName):
 #    processMovieFiles(sampleFileName)
     
 
-with open("/home/freax/netflix-prize-work/avgRatingsOut.txt", "a") as outfile:
+with open(DIR_PATH + "avgRatingsOut.txt", "a") as outfile:
     for files in files_array:        
         filename, avgRating = processMovieFiles(files)
         print filename, avgRating
