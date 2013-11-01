@@ -3,6 +3,7 @@ import os.path as path
 import os as os
 import numpy as np
 import random
+import time
 
 DATASET_SIZE = 17770
 SAMPLE_SIZE = DATASET_SIZE / 10
@@ -20,6 +21,8 @@ randomNumList=[]
 sampleFilesList = []
 for i in range(SAMPLE_SIZE):
     randomNumList.append(random.randrange(1, DATASET_SIZE ,1))
+    
+past = time.time()
 
 # collect all the file names within the dataset
 files_array = []
@@ -29,7 +32,7 @@ for files in os.listdir("."):
       files_array.append(files)
       print files
 
-# create a dictionary to store the filenames in the dataset indexed on their movieIDs
+# create a dictionary to store all the filenames in the dataset indexed on their movieIDs
 movieIdDict = {}
 for fileName in files_array:    
         fileNum = fileName.split('mv_')
@@ -37,8 +40,9 @@ for fileName in files_array:
         fileNum = int(fileNumList[0])
         movieIdDict[fileNum] = fileName
 
+
 # open a movie file, calculate its average ratings 
-# store the average ratings in a outputfile
+# store the average ratings in a outputfile, do this for all the files in the dataset
 averageRatingDict = {}
 def processMovieFiles(sampleFileName):
     #sampleFileNumList = sampleFileName.split('.')
@@ -74,8 +78,11 @@ with open(DIR_PATH + "avgRatingsOut.txt", "a") as outfile:
         print filename, avgRating
         outfile.write(str(avgRating))
     outfile.close()
-
     
+print "Time:%.3f" % (time.time() - past), "seconds"
+
+
+
 
            
            
