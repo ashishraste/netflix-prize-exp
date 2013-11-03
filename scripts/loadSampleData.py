@@ -8,33 +8,32 @@ DATASET_SIZE = 17770
 SAMPLE_SIZE = DATASET_SIZE / 10
 
 DIR_PATH = "/media/01244D4977874BCC/training_set/"
-#get the files name in the directory DIR
-
+# get the files name in the directory DIR
 
 # pick a random sample of 1/10th the size of the dataset
-randomNumList=[]
+randomNumList = []
 sampleFilesList = []
 for i in range(SAMPLE_SIZE):
     randomNumList.append(random.randrange(1, DATASET_SIZE ,1))
-    
+
+os.chdir(DIR_PATH)    
 past = time.time()
 
 # collect all the file names within the dataset
 files_array = []
-os.chdir(DIR_PATH)
 for files in os.listdir("."):
-    if files.endswith(".txt") :
+    if files.endswith(".txt"):
       files_array.append(files)
-      #print files
 
 # create a dictionary to store all the filenames in the dataset indexed on their movieIDs
-movieIdDict = {}
+movieIDDict = {}
+movieIDNameDict = {}
 for fileName in files_array:    
     if "mv_" in fileName:
         fileNum = fileName.split('mv_')
         fileNumList = fileNum[1].split('.')        
         fileNum = int(fileNumList[0])
-        movieIdDict[fileNum] = fileName
+        movieIDDict[fileNum] = fileName
 
 
 # open a movie file, calculate its average ratings 
@@ -45,7 +44,7 @@ allRatingsAverage = 0
 def processMovieFiles(sampleFileName):
     #sampleFileNumList = sampleFileName.split('.')
     #sampleFileNum = int(sampleFileNumList[0])
-    #sampleFileName = movieIdDict[sampleFileNum]            
+    #sampleFileName = movieIDDict[sampleFileNum]            
     global allRatingsAverage
     global numOfAllRatings
     with open(sampleFileName) as f: 
