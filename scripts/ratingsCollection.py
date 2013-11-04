@@ -4,11 +4,11 @@ import random
 import time
 from ctypes import *
 
-class UserID(Structure):
-    _fields_ = [("uid", np.int16), ("rating", np.int8)]
-
-class MovieID(Structure):
-    __fields__ = [("mid", np.int16), ("rating", np.int8)]
+#class UserID(Structure):
+#    _fields_ = [("uid", c_ushort), ("rating", c_ubyte)]
+#
+#class MovieID(Structure):
+#    __fields__ = [("mid", c_ushort), ("rating", c_ubyte)]
 
 DATASET_SIZE = 17770
 SAMPLE_SIZE = DATASET_SIZE / 10
@@ -35,6 +35,8 @@ def collectFileNames():
 # open a movie file, store its uid (vs) rating map in struct form 
 rByMIDDict = {}
 rByUIDDict = {}
+midRatingDict = {}
+uidRatingDict = {}
 def processMovieFiles(sampleFileName):
     with open(sampleFileName) as f:
         rows = f.readlines()
@@ -46,23 +48,43 @@ def processMovieFiles(sampleFileName):
             lineContentSplit = lines.split(',') 
             uid = int(lineContentSplit[0])
             rating = int(lineContentSplit[1])
-            userid = UserID(np.int16(uid), np.int8(rating))
-            movieid = MovieID(np.int16(mid), np.int8(rating))
             
+            # creating rByMIDDict, indexed on MIDs
+            if uid in uidRatingDict:
+                uidRatingDict[uid].append(rating)
+            else:
+                uidRatingDict[uid] = [rating]                
             if mid in rByMIDDict:
-                rByMIDDict[mid].append(userid)
+                rByMIDDict[mid].append(uidRatingDict)
             else:
-                rByMIDDict[mid] = [userid]
+                rByMIDDict[mid] = [uidRatingDict]
                 
-            if uid in rByUIDDict:
-                rByUIDDict[uid].append(movieid)
+            # creating rByUIDDict, indexed on UIDs
+            if mid in midRatingDict:
+                midRatingDict[mid].append(rating)
             else:
-                rByUIDDict[uid] = [movieid]
+                midRatingDict[mid] = [rating]                
+            if uid in rByUIDDict:
+                rByUIDDict[uid].append(midRatingDict)
+            else:
+                rByUIDDict[uid] = [midRatingDict]            
+                
+            #userid = UserID(c_ushort(uid), c_ubyte(rating))
+            #movieid = MovieID(c_ushort(mid), c_ubyte(rating))            
+            #if mid in rByMIDDict:
+            #    rByMIDDict[mid].append(userid)
+            #else:
+            #    rByMIDDict[mid] = [userid]                
+            #if uid in rByUIDDict:
+            #    rByUIDDict[uid].append(movieid)
+            #else:
+            #    rByUIDDict[uid] = [movieid]
             
     f.close()
 
 
 def main():
+    collectFileNames()
     for movieFile in files_array:
         processMovieFiles(movieFile)
 
