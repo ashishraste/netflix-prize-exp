@@ -32,12 +32,11 @@ def collectFileNames():
             files_array.append(files)
 
 
-# open a movie file, store its uid (vs) rating map in struct form 
+
 rByMIDDict = {}
-rByUIDDict = {}
-midRatingDict = {}
 uidRatingDict = {}
-def processMovieFiles(sampleFileName):
+# creating rByMIDDict, indexed on MIDs
+def createMIDDict(sampleFileName):
     with open(sampleFileName) as f:
         rows = f.readlines()
         midSplit = rows[0].split(":")
@@ -49,16 +48,29 @@ def processMovieFiles(sampleFileName):
             uid = int(lineContentSplit[0])
             rating = int(lineContentSplit[1])
             
-            # creating rByMIDDict, indexed on MIDs
-            if uid in uidRatingDict:
-                uidRatingDict[uid].append(rating)
-            else:
-                uidRatingDict[uid] = [rating]                
+            uidRatingDict[uid] = [rating]                
             if mid in rByMIDDict:
                 rByMIDDict[mid].append(uidRatingDict)
             else:
-                rByMIDDict[mid] = [uidRatingDict]
-                
+                rByMIDDict[mid] = [uidRatingDict]                            
+        f.close()
+
+
+
+rByUIDDict = {}    
+midRatingDict = {}
+def createUIDDict(sampleFileName):
+    with open(sampleFileName) as f:
+        rows = f.readlines()
+        midSplit = rows[0].split(":")
+        mid = int(midSplit[0])
+        del rows[0]
+        lineContentSplit = []
+        for lines in rows:
+            lineContentSplit = lines.split(',') 
+            uid = int(lineContentSplit[0])
+            rating = int(lineContentSplit[1])
+            
             # creating rByUIDDict, indexed on UIDs
             if mid in midRatingDict:
                 midRatingDict[mid].append(rating)
@@ -68,25 +80,13 @@ def processMovieFiles(sampleFileName):
                 rByUIDDict[uid].append(midRatingDict)
             else:
                 rByUIDDict[uid] = [midRatingDict]            
-                
-            #userid = UserID(c_ushort(uid), c_ubyte(rating))
-            #movieid = MovieID(c_ushort(mid), c_ubyte(rating))            
-            #if mid in rByMIDDict:
-            #    rByMIDDict[mid].append(userid)
-            #else:
-            #    rByMIDDict[mid] = [userid]                
-            #if uid in rByUIDDict:
-            #    rByUIDDict[uid].append(movieid)
-            #else:
-            #    rByUIDDict[uid] = [movieid]
+        f.close()
             
-    f.close()
-
 
 def main():
     collectFileNames()
     for movieFile in files_array:
-        processMovieFiles(movieFile)
+        createMIDDict(movieFile)
 
 
 if __name__ == "__main__":
