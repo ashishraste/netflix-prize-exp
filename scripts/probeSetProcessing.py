@@ -25,7 +25,6 @@ for fileName in files_array:
         movieIDNamesDict[fileNum] = fileName
 
 userIDDict = {}
-cntr = 0
 with open(DIR_PATH + "probe.txt") as probeFile:
     lines = probeFile.readlines()
     for userID in lines:
@@ -38,4 +37,8 @@ with open(DIR_PATH + "probe.txt") as probeFile:
             else:
                 userIDDict[movieID] = [int(userID)]            
     probeFile.close() 
-print userIDDict.get(int(1))
+#print userIDDict.get(int(1))
+
+print "Time:%.3f" % (time.time() - past), "seconds"
+
+
