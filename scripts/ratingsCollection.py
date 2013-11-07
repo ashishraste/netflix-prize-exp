@@ -56,9 +56,9 @@ def createMIDDict(sampleFileName):
         f.close()
 
 
-
 rByUIDDict = {}    
 midRatingDict = {}
+# creating rByUIDDict, indexed on UIDs
 def createUIDDict(sampleFileName):
     with open(sampleFileName) as f:
         rows = f.readlines()
