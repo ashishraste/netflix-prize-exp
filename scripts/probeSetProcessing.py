@@ -1,5 +1,4 @@
 import os as os
-import numpy as np
 import time
 
 DATASET_SIZE = 17770
@@ -73,7 +72,8 @@ def getActualUserIDMap(userIDFile):
             counter += 1
         ufile.close()
     return uidDict
-    
+
+        
 midUidDict = {}
 def main():
     global midUidDict
@@ -82,7 +82,7 @@ def main():
     uidDict = getActualUserIDMap(userIdFile)
     probeFilePath = DIR_PATH + "netflix/probe.txt"
     midUidDict = processProbeFile(probeFilePath, uidDict)
-    print len(midUidDict)
+    #print len(midUidDict)    
         
 
 if __name__ == "__main__":

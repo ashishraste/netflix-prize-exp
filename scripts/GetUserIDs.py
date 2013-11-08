@@ -12,8 +12,13 @@ ROW = 17770
 COL = 480189
 INFINITY_MINUS = 0
 INFINITY_PLUS = 3000000
+<<<<<<< HEAD
 #UID_FILE_PATH = "/Users/OrangeR/Dropbox/CS5228/scripts/userIdsByAscendingOrder.txt"
 DIR_PATH = "/Users/OrangeR/Documents/study/AY2013_14/CS5228/group project/Dataset of Netflix/training_set/"
+=======
+UID_FILE_PATH = "/home/freax/netflix-prize-exp/outputs/userIdsByAscendingOrder.txt"
+DIR_PATH = "/media/01244D4977874BCC/training_set/"
+>>>>>>> local-priv
 
 past = time.time()
 #create a lil_matrix
@@ -22,7 +27,11 @@ movieRatings = []
 #get the files name in the directory DIR
 files_array = []
 
+<<<<<<< HEAD
 uIdArray = []
+=======
+#uIdArray = []
+>>>>>>> local-priv
 #os.chdir(UID_FILE_PATH)
 #with open(UID_FILE_PATH) as uidFile:
 #    movieRatings.append([int(m) for m in f.readline().split(':') if m.isdigit()])
@@ -71,7 +80,11 @@ for filename in files_array:
         print "\rMemory:",(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1000000), "MB", "Files:", mID[0], "/", ROW, "(%f" % (float(mID[0])/float(ROW) * 100),"%)", "Time:%.3f" % (time.time() - past), "seconds",
         sys.stdout.flush() 
 
+<<<<<<< HEAD
 with open("/Users/OrangeR/Documents/cs5228/" + "userIdsByAscendingOrder.txt", "a") as outfile:
+=======
+with open("/home/freax/netflix-prize-exp/outputs/" + "userIdsByAscendingOrder.txt", "a") as outfile:
+>>>>>>> local-priv
     for i in userIdArray:
         outfile.write(str(i) + '\n')
     outfile.close()

@@ -1,20 +1,13 @@
-from tempfile import mkdtemp
-import os.path as path
 import os as os
-import numpy as np
 import random
 import time
 
 DATASET_SIZE = 17770
 SAMPLE_SIZE = DATASET_SIZE / 10
 
-DIR_PATH = "/Users/OrangeR/Documents/study/AY2013_14/CS5228/group project/Dataset of Netflix/training_set/"
+DIR_PATH = "/media/01244D4977874BCC/training_set/"
+PROJECT_PATH = "/home/freax/netflix-prize-exp/"
 #get the files name in the directory DIR
-
-# write into the memmap array (which creates a virtual file through mkdtemp)
-# the values of movieID and their average rating
-#virtualFilename = path.join(mkdtemp(), 'ratingsfile.dat')
-#fp = np.memmap(virtualFilename, dtype='int32', mode='w+', shape=(SAMPLE_SIZE,1))
 
 # pick a random sample of 1/10th the size of the dataset
 randomNumList=[]
@@ -45,9 +38,6 @@ for fileName in files_array:
 # store the average ratings in a outputfile, do this for all the files in the dataset
 averageRatingDict = {}
 def processMovieFiles(sampleFileName):
-    #sampleFileNumList = sampleFileName.split('.')
-    #sampleFileNum = int(sampleFileNumList[0])
-    #sampleFileName = movieIdDict[sampleFileNum]            
     with open(sampleFileName) as f: 
         avgRating = 0       
         rows = f.readlines()
@@ -63,16 +53,8 @@ def processMovieFiles(sampleFileName):
     f.close()    
     return (f.name, avgRating)    
     
-# create the filenames under the sample set using randomNumList
-# and calculate their averageRatings
-#fileType = '.txt'
-#for randomNum in randomNumList:
-#    sampleFileName = '{0}{1}'.format(randomNum, fileType) 
-#    #print sampleFileName   
-#    processMovieFiles(sampleFileName)
-    
 
-with open("/Users/OrangeR/Documents/cs5228/" + "avgRatingsOut.txt", "a") as outfile:
+with open(PROJECT_PATH + "data/avgRatingsOut.txt", "a") as outfile:
     for files in files_array:        
         filename, avgRating = processMovieFiles(files)
         print filename, avgRating
