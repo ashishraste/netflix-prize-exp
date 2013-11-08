@@ -172,4 +172,4 @@ def main():
             
     probeFilePath = DATA_PATH + "probe_converted.txt"
     probeDict = createProbeDict(probeFilePath)    
-    removeGlobalEffects(lm, probeDict)
+    removeGlobalEffects(lm)
