@@ -1,5 +1,4 @@
 import os as os
-import numpy as np
 import time
 
 DATASET_SIZE = 17770

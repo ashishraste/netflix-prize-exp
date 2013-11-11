@@ -7,9 +7,9 @@ PROJECT_PATH = "/home/freax/netflix-prize-exp/"
 DATA_PATH = PROJECT_PATH + "data/"
 
 allRatingsMean = 3.6043
-movieEffectTuningParam = 20
+userEffectTuningParam = 20
 
-movieEffectDict = {}
+userEffectDict = {}
 
 probeDict = {}
 def createProbeDict(filepath):
@@ -32,34 +32,32 @@ def createProbeDict(filepath):
 
 def calculateDeviation(ratingsMatrix):   
     nonZeroIndices = ratingsMatrix.nonzero()[1]
-    deviationSum = 0.0 
-    numOfRatings = 0
+    deviationSum = 0.0     
     for index in nonZeroIndices:
-        deviationSum += (ratingsMatrix[0, index] - allRatingsMean)
-        numOfRatings += 1   
+        deviationSum += (ratingsMatrix[0, index] - allRatingsMean)        
     return (deviationSum, len(nonZeroIndices))
 
 
 probeSetRatingsDict = {}
-def removeGlobalEffects(lm):        
-    # calculating the movie-effects 
-    for key in probeDict.iterkeys():
-        ratingsForMovie = csr_matrix(lm.getrow(key-1))
-        deviationSum, numOfRatings = calculateDeviation(ratingsForMovie)
-        movieEffect = deviationSum / (movieEffectTuningParam + numOfRatings)
-        movieEffectDict[key] = movieEffect        
+def removeGlobalEffects(lm):
+    # calculating the user-effects 
+    for user in probeDict.itervalues():
+        if user not in userEffectDict:
+            ratingsForUser = csr_matrix(lm.getrow(user-1))
+            deviationSum, numOfRatings = calculateDeviation(ratingsForUser)
+            userEffect = deviationSum / (userEffectTuningParam + numOfRatings)
+            userEffectDict[user] = userEffect
 
-    with open(DATA_PATH + "movieEffectRatings.txt") as mfile:
-        for key in movieEffectDict.iterkeys():
-            mfile.write(str(movieEffectDict.get(key)))
-        mfile.close()
-
+    with open(DATA_PATH + "userEffectRatings.txt") as ufile:
+        for key in userEffectDict.iterkeys():
+            ufile.write(str(key) + ":" + str(userEffectDict.get(key)))
+        ufile.close()
 
 def main():
-    global probeDict
     probeFilePath = DATA_PATH + "probe_converted.txt"
     probeDict = createProbeDict(probeFilePath)    
-    removeGlobalEffects(lm)
+    lmT = lm.transpose()
+    removeGlobalEffects(lmT)
     
 if __name__ == "__main__":
     past = time.time()    
