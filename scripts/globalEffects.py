@@ -22,7 +22,6 @@ allRatingsMean = 3.6043
 movieEffectTuningParam = 20
 userEffectTuningParam = 10
 
-past = time.time()
 # create a lil_matrix
 lm = lil_matrix((LIMIT, COL), dtype=np.int8)
 
@@ -30,13 +29,15 @@ lm = lil_matrix((LIMIT, COL), dtype=np.int8)
 movieRatings = []
 movieEffectDict = {}
 userEffectDict = {}
+
 # get the files name in the directory DIR
 files_array = []
-os.chdir(DIR_PATH)
-for files in os.listdir("."):
-    if files.endswith(".txt"):
-        files_array.append(files)
-        print files
+def getFileNames():
+    os.chdir(DIR_PATH)
+    for files in os.listdir("."):
+        if files.endswith(".txt"):
+            files_array.append(files)
+            #print files
 
 
 uIdArray = []
@@ -152,6 +153,8 @@ def removeGlobalEffects(lm):
     
 def main():
     global probeDict
+    global files_array
+    getFileNames()
     for filename in files_array:
         global fIdx
         global lm
@@ -167,9 +170,14 @@ def main():
                     
                 f.close()
             fIdx += 1
-            print "\rMemory:",(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1000000), "MB", "Files:", mID[0], "/", ROW, "(%f" % (float(mID[0])/float(ROW) * 100),"%)", "Time:%.3f" % (time.time() - past), "seconds",
+            #print "\rMemory:",(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1000000), "MB", "Files:", mID[0], "/", ROW, "(%f" % (float(mID[0])/float(ROW) * 100),"%)", "Time:%.3f" % (time.time() - past), "seconds",
             sys.stdout.flush() 
             
     probeFilePath = DATA_PATH + "probe_converted.txt"
     probeDict = createProbeDict(probeFilePath)    
     removeGlobalEffects(lm)
+    
+if __name__ == "__main__":
+    past = time.time()    
+    main()
+    print "Time:%.3f" % (time.time() - past), "seconds"
