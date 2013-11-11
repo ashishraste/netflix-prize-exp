@@ -2,7 +2,6 @@ import os
 import sys
 import time
 import resource
-from array import array
 #import scipy.sparse as SP
 import numpy as np
 from scipy.sparse import lil_matrix, csr_matrix
@@ -102,23 +101,6 @@ def calculateDeviation(ratingsMatrix):
     return deviationSum, numOfRatings
 
 
-#def calculateMovieEffects(lm, probeDict):
-#    # calculating movieEffect bi      
-#    for key in probeDict.iterkeys():
-#        ratingsForMovie = csr_matrix(lm.getrow(key))
-#        deviationSum, numOfRatings = calculateDeviation(ratingsForMovie, 1)
-#        movieEffect = deviationSum / (movieEffectTuningParam + numOfRatings)
-#        movieEffectDict[key] = movieEffect
-#    
-#
-#def calculateUserEffects(lmT, probeDict):
-#    for userIDList in probeDict.itervalues():
-#        for userIDIndex in range(len(userIDList)):
-#            ratingsByUser = csr_matrix(lmT.getrow(userIDList[userIDIndex]))
-#            deviationSum, numOfRatings = calculateDeviation(ratingsByUser)
-#            userEffect = deviationSum / (userEffectTuningParam + numOfRatings)
-#            userEffectDict[userIDList[userIDIndex]] = userEffect
-
 probeSetRatingsDict = {}
 userBaseline = {}
 def removeGlobalEffects(lm):
@@ -128,27 +110,33 @@ def removeGlobalEffects(lm):
     global probeSetRatingsDict
     global userBaseline
     #calculateMovieEffects(lm, probeDict)
-    lmT = lm.transpose()  
+    #lmT = lm.transpose()  
     #calculateUserEffects(lmT, probeDict)
         
+    # calculating the movie-effects 
     for key in probeDict.iterkeys():
         ratingsForMovie = csr_matrix(lm.getrow(key))
-        deviationSum, numOfRatings = calculateDeviation(ratingsForMovie, 1)
+        deviationSum, numOfRatings = calculateDeviation(ratingsForMovie)
         movieEffect = deviationSum / (movieEffectTuningParam + numOfRatings)
         movieEffectDict[key] = movieEffect
         
-        for userIDList in probeDict[key]:
-            for userIDIndex in range(len(userIDList)):
-                ratingsByUser = csr_matrix(lmT.getrow(userIDList[userIDIndex]))
-                deviationSum, numOfRatings = calculateDeviation(ratingsByUser)
-                userEffect = deviationSum / (userEffectTuningParam + numOfRatings)
-                userEffectDict[userIDList[userIDIndex]] = userEffect
-                
-                baselineRating = allRatingsMean + movieEffect + userEffect
-                userBaseline[userIDList[userIDIndex]] = baselineRating
+        ## calculating the user-effects
+        #for userIDList in probeDict[key]:
+        #    for userIDIndex in range(len(userIDList)):
+        #        ratingsByUser = csr_matrix(lmT.getrow(userIDList[userIDIndex]))
+        #        deviationSum, numOfRatings = calculateDeviation(ratingsByUser)
+        #        userEffect = deviationSum / (userEffectTuningParam + numOfRatings)
+        #        userEffectDict[userIDList[userIDIndex]] = userEffect
+        #        
+        #        baselineRating = allRatingsMean + movieEffect + userEffect
+        #        userBaseline[userIDList[userIDIndex]] = baselineRating
         
-        probeSetRatingsDict[key] = [userBaseline]
+        #probeSetRatingsDict[key] = [userBaseline]
 
+    with open(DATA_PATH + "movieEffectRatings.txt") as mfile:
+        for key in movieEffectDict.iterkeys():
+            mfile.write(str(movieEffectDict[key]) + ":" + str(movieEffectDict.get(key)))
+        mfile.close()
             
     
 def main():
