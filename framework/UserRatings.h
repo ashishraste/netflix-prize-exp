@@ -1,6 +1,5 @@
 //
 //  UserMovieRatings.h
-//  CS5228Project
 
 
 #ifndef framework_UserMovieRatings_h

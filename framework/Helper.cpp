@@ -1,6 +1,5 @@
 //
 //  Helper.cpp
-//  CS5228Project
 
 
 #include "Helper.h"

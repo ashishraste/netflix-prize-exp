@@ -1,7 +1,5 @@
 //
 //  MovieRatings.cpp
-//  CS5228Project
-
 
 #include "MovieRatings.h"
 

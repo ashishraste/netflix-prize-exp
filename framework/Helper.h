@@ -1,6 +1,5 @@
 //
 //  Helper.h
-//  CS5228Project
 
 
 #ifndef framework_Helper_h

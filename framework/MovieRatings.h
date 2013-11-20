@@ -1,7 +1,5 @@
 //
 //  MovieUserRatings.h
-//  CS5228Project
-
 
 #ifndef framework_MovieUserRatings_h
 #define framework_MovieUserRatings_h

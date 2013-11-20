@@ -1,9 +1,6 @@
 //
 //  main.cpp
 
-//  CS5228Project
-
-
 #include <iostream>
 #include <fstream>
 #include <string>
