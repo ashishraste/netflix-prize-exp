@@ -21,8 +21,10 @@ int main(int argc, const char * argv[])
     // insert code here...
     MovieRatings *mRs = new MovieRatings();
     UserRatings *uRs = new UserRatings();
+    ProbeRatings *pRs = new ProbeRatings();
     Database db;
-    db.loadDatabase(DATABASE_PATH + MOVIEDATABASE, DATABASE_PATH + USERDATABASE, *mRs, *uRs);
+
+    //db.loadDatabase(DATABASE_PATH + MOVIEDATABASE, DATABASE_PATH + USERDATABASE, *mRs, *uRs);
     //mRs->dumpRatings(17770);
     //vector<mRatings> temp = (*mRs)[1];
     //cout << ((*mRs)[1])[0].getValue() << endl;
@@ -33,11 +35,19 @@ int main(int argc, const char * argv[])
     //    cout << p[i] << endl;
     //}
 
-    Algorithm *al = new Algorithm(&db, mRs, uRs);
-    al -> determine(2);
+    db.loadDatabase(DATABASE_PATH + MOVIEDATABASE, DATABASE_PATH + USERDATABASE, *mRs, *uRs);
+    db.loadProbeDatabase(DATABASE_PATH + PROBEDATABASE, *pRs);
+
+    Algorithm *al = new Algorithm(mRs, uRs, pRs);
+    cout << "Generating the predictions" << endl;
+    al->predictRatings();
+//    cout << "Calculating RMSE" << endl;
+//    double rmse = pRs->RMSE();
+//    cout << "RMSE: " << rmse;
 
     delete mRs;
     delete uRs;
+    delete pRs;
     return 0;
 }
 

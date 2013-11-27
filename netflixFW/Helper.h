@@ -1,16 +1,9 @@
-//
-//  Helper.h
-//  CS5228Project
-//
-//  Created by OrangeR on 15/11/13.
-//  Copyright (c) 2013 OrangeR. All rights reserved.
-//
-
 #ifndef CS5228Project_Helper_h
 #define CS5228Project_Helper_h
 #include <string>
 #include <vector>
 #include <typeinfo>
+#include <math.h>
 #include "Config.h"
 #include "ProbeRatings.h"
 
@@ -19,7 +12,6 @@ using namespace::std;
 template<typename T>
 inline int binarySearch(vector<T>& containers, T& item)
 {
-    
     if(containers.size() == 0)
         return 0;
     
@@ -58,5 +50,4 @@ inline void insert(vector<T> & containers, T& item, int index)
 }
 
 int strToInt(string str);
-double RMSE(ProbeRatings &predictedRatings, ProbeRatings &realRatings);
 #endif

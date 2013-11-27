@@ -29,7 +29,7 @@ public:
     bool loadProbeDatabase(const string database_probe, ProbeRatings &probe);
 private:
     bool genDatabase(const string path_src, const string path_dest, const string movieDatabase, const string userDatabase);
-    bool genProbeDatabase(const string path_probe, const string probeDatabase);
+    bool genProbeDatabase(const string path_src, const string path_dest, const string probeDatabase);
 };
 
 #endif

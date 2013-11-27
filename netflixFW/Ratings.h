@@ -1,8 +1,8 @@
 #ifndef CS5228Project_Ratings_h
 #define CS5228Project_Ratings_h
-#define G_MEAN				3.604
-#define USER_BIAS_PARAM		10
-#define MOVIE_BIAS_PARAM	25
+#define G_MEAN              3.604
+#define USER_BIAS_PARAM     10
+#define MOVIE_BIAS_PARAM    25
 
 #include <iostream>
 #include <math.h>

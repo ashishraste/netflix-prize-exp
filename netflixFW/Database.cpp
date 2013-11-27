@@ -94,6 +94,136 @@ bool Database::loadDatabase(const std::string database_movie_path,const std::str
     return true;
 }
 
+bool Database::loadProbeDatabase(const string database_probe_path, ProbeRatings &probe)
+{
+    ifstream probeFile(database_probe_path.c_str(), ios::in|ios::binary);
+    if(!probeFile.good())
+    {
+        cerr << database_probe_path << " not exists!" <<endl;
+        if(genProbeDatabase(PROBE_PATH + PROBE_FILE, DATABASE_PATH, PROBEDATABASE))
+            loadProbeDatabase(database_probe_path, probe);
+        else
+            return false;
+    }
+    else
+    {
+        if(probeFile.is_open())
+        {
+            vector<mRatings> pRs;
+            cout << "Loading Probe Database..." << endl;
+            uInt num = 0;
+            unsigned short mId = 0;
+            unsigned short uIdHi = 0;
+            uByte rating = 0;
+            while(!probeFile.eof())
+            {
+                num = 0;
+                mId = 0;
+                uIdHi = 0;
+                rating = 0;
+                pRs.clear();
+                probeFile.read((char *)&mId, sizeof(unsigned short));
+                probeFile.read((char *)&num, sizeof(uInt));
+                for(int i = 0; i < num; i ++)
+                {
+                    probeFile.read((char *)(&uIdHi), sizeof(unsigned short));
+                    probeFile.read((char *)(&rating), sizeof(uByte));
+                    pRs.push_back(mRatings(uIdHi, rating));
+                }
+                if(mId != 0)
+                    probe.addRatings(mId, pRs);
+            }
+        }
+        probeFile.close();
+    }
+    probe.dumpAllRatings();
+    return true;
+}
+
+bool Database::genProbeDatabase(const string path_src, const string path_dest, const string probeDatabase)
+{
+    ifstream probeFile(path_src.c_str());
+
+    string line;
+    unsigned short movieId = 0;
+    vector<mRatings> pRs;
+
+    ProbeRatings probes;
+    //bool firstTime = true;
+    if(probeFile.good())
+    {
+        cout << "Read Original Probe File" << endl;
+        if(probeFile.is_open())
+        {
+            while(getline(probeFile, line))
+            {
+                if(!(line.find(':') == string::npos))
+                {
+                    if(pRs.size() != 0)
+                        probes.addRatings(movieId, pRs);
+
+                    movieId = strToInt(line.substr(0, line.find(':') - 0));
+                     //if(movieId != 0)
+                    //    probes.addPredictedMId(uShort(movieId));
+                    pRs.clear();
+                    //cout << movieId << endl;
+                    //movieId = 0;
+                }
+                else
+                {
+                    //int start = 0;
+                    //cout << line.substr(start, line.find(',') - start) << " " << line.substr(line.find(',') + 1, line.find_last_of(',') - line.find(',') - 1) << endl;
+
+                    uInt uId = strToInt(line.substr(0, line.find(',') - 0));
+                    uByte rating = uByte(strToInt(line.substr(line.find(',') + 1, line.find_last_of(',') - line.find(',') - 1)));
+                    mRatings mRat = mRatings(uId, rating);
+                    pRs.push_back(mRat);
+                }
+            }
+
+        }
+        //add the last one
+        if(pRs.size() != 0)
+            probes.addRatings(movieId, pRs);
+        probeFile.close();
+    }
+
+    ofstream outFile((path_dest + probeDatabase).c_str(), ios::out|ios::binary|ios::app|ios::ate);
+    if(outFile.good())
+    {
+        //vector<unsigned short> mIds;
+        if(outFile.is_open())
+        {
+            cout << "size " << probes.getPredictedMovieNum() << endl;
+            for(int i = 0; i < probes.getPredictedMovieNum(); i ++)
+            {
+                unsigned short uIdHi = 0;
+                uByte rating = 0;
+                unsigned short movieId = 0;
+
+                vector<mRatings> mRsTemp;
+                probes.getRatings(i, movieId, mRsTemp);
+                uInt num = uInt(mRsTemp.size());
+                if(num == 0)
+                    break;
+                outFile.write((char *)&movieId, sizeof(unsigned short));
+                outFile.write((char *)&num, sizeof(uInt));
+
+                for(vector<mRatings>::iterator it = mRsTemp.begin(); it != mRsTemp.end(); ++ it)
+                {
+                    uIdHi = it->userIdHi;
+                    rating = (it->userIdLo << 4) + it->value;
+                    outFile.write((char *)&uIdHi, sizeof(unsigned short));
+                    outFile.write((char *)&rating, sizeof(uByte));
+                }
+            }
+            outFile.close();
+        }
+    }
+    return true;
+}
+
+
 bool Database::genDatabase(const std::string path_src, const std::string path_dest, const string movieDatabase, const string userDatabase)
 {
     
