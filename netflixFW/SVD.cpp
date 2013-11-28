@@ -22,7 +22,7 @@ SVD::SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs)
 	cout << "\nfinished calculating the features.. whoof~!" << endl;
 
 	double rmse = predictRatings();
-	cout << "RMSE: " << rmse << endl;predictRatings();
+	cout << "RMSE: " << rmse << endl;
 }
 
 SVD::~SVD()
