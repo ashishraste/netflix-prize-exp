@@ -1,13 +1,13 @@
 CC = g++
 
-SOURCE = main.cpp Algorithm.cpp Algorithm.h Database.cpp Database.h Config.h Helper.cpp Helper.h MovieRatings.cpp MovieRatings.h UserRatings.cpp UserRatings.h ProbeRatings.cpp  ProbeRatings.h Ratings.h
+SOURCE = main.cpp Algorithm.cpp Algorithm.h Database.cpp Database.h Config.h Helper.cpp Helper.h MovieRatings.cpp MovieRatings.h UserRatings.cpp UserRatings.h ProbeRatings.cpp  ProbeRatings.h Ratings.h BaselinePredictor.cpp BaselinePredictor.h
 
-OBJ = main.o Algorithm.o Database.o Helper.o MovieRatings.o UserRatings.o ProbeRatings.o
+OBJ = main.o Algorithm.o Database.o Helper.o MovieRatings.o UserRatings.o ProbeRatings.o BaselinePredictor.o
 
 all : main
 
 main : $(OBJ)
-	$(CC) -o fw $(OBJ) 
+	$(CC) -g -o fw $(OBJ) 
 
 main.o : main.cpp Algorithm.h Database.h MovieRatings.h UserRatings.h Helper.h Config.h
 	$(CC) -c main.cpp -o main.o
@@ -29,6 +29,9 @@ MovieRatings.o: MovieRatings.cpp MovieRatings.h
 
 UserRatings.o: UserRatings.cpp UserRatings.h
 	$(CC) -c UserRatings.cpp
+
+BaselinePredictor.o: BaselinePredictor.cpp BaselinePredictor.h
+	$(CC) -c BaselinePredictor.cpp
 
 clean :
 	rm $(OBJ) fw

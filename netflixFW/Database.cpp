@@ -110,7 +110,7 @@ bool Database::loadProbeDatabase(const string database_probe_path, ProbeRatings 
         if(probeFile.is_open())
         {
             vector<mRatings> pRs;
-            cout << "Loading Probe Database..." << endl;
+            cout << "Loading Probe Database" << endl;
             uInt num = 0;
             unsigned short mId = 0;
             unsigned short uIdHi = 0;
