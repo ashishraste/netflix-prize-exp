@@ -11,6 +11,6 @@ class Algorithm{
 public:
     Algorithm(){};
     virtual ~Algorithm() {};
-    virtual void predictRatings() = 0;
+    virtual double predictRatings() = 0;
 };
 #endif

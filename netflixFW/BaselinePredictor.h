@@ -8,7 +8,7 @@ public:
 	BaselinePredictor(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs);
 	virtual ~BaselinePredictor();
 	double calBaselineEst(uInt movieId, uInt userId);
-	void predictRatings();
+	double predictRatings();
 
 private:
 	MovieRatings *mRs;

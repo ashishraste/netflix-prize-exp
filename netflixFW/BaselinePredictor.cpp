@@ -3,13 +3,14 @@
 BaselinePredictor::BaselinePredictor(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs)
  				: Algorithm(), mRs(mRs), uRs(uRs), pRs(pRs)
 {
-	predictRatings();
+	double rmse = predictRatings();
+	cout << "RMSE: " << rmse << endl;
 }
 
 BaselinePredictor::~BaselinePredictor()
 {}
 
-void BaselinePredictor::predictRatings() {
+double BaselinePredictor::predictRatings() {
 	std::vector<mRatings> realpRs;
 	for (uInt mIdx = 0; mIdx < pRs->getPredictedMovieNum(); ++mIdx)
 	{
@@ -23,7 +24,9 @@ void BaselinePredictor::predictRatings() {
 			pRs->addRatings(predRating);
 		}
 	}
-	return;
+	cout << "Calculating RMSE" << endl;
+	double rmse = pRs->RMSE();
+	return rmse;
 }
 
 double BaselinePredictor::calBaselineEst(uInt movieId, uInt userId) {

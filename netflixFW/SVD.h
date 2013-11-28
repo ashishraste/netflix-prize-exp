@@ -6,7 +6,7 @@
 #define MAX_RATINGS     100480508     // Ratings in entire training set (+1)
 #define MAX_CUSTOMERS   480190        // Customers in the entire training set (+1)
 #define MAX_MOVIES      17771         // Movies in the entire training set (+1)
-#define MAX_FEATURES    5            // Number of features to use
+#define MAX_FEATURES    64            // Number of features to use
 #define MIN_EPOCHS      120           // Minimum number of epochs per feature
 #define MAX_EPOCHS      200           // Max epochs per feature
 
@@ -20,7 +20,7 @@ public:
 	SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs);
 	virtual ~SVD();
 
-	void predictRatings();
+	double predictRatings();
 	inline double predictRating(uInt movieId, uInt userId, int feature, float cacheVal, bool bTrailing) const;
 
 	void determine();

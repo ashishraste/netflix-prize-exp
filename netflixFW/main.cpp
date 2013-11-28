@@ -69,10 +69,6 @@ int main(int argc, const char * argv[])
     		break;
     }
 
-    cout << "Calculating RMSE" << endl;
-    double rmse = pRs->RMSE();
-    cout << "RMSE: " << rmse << endl;
-
     delete mRs;
     delete uRs;
     delete pRs;

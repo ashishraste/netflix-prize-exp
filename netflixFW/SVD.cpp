@@ -1,5 +1,6 @@
 /*
- * Inspired from Simon Funk's SVD article (http://sifter.org/~simon/journal/20061211.html)
+ * Inspired by Simon Funk's SVD article (http://sifter.org/~simon/journal/20061211.html),
+ * and MIT OCW Linear Algebra lecture notes (http://ocw.mit.edu/courses/mathematics/18-06sc-linear-algebra-fall-2011)
  * Will continue to evolve..
  */
 
@@ -19,7 +20,9 @@ SVD::SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs)
 
 	calculateFeatures();
 	cout << "\nfinished calculating the features.. whoof~!" << endl;
-	predictRatings();
+
+	double rmse = predictRatings();
+	cout << "RMSE: " << rmse << endl;predictRatings();
 }
 
 SVD::~SVD()
@@ -38,7 +41,7 @@ double SVD::calSvdRatings(uInt movieId, uInt userId) {
 }
 
 
-void SVD::predictRatings() {
+double SVD::predictRatings() {
 	std::vector<mRatings> realpRs;
 	for (uInt mIdx = 0; mIdx < pRs->getPredictedMovieNum(); ++mIdx)
 	{
@@ -52,7 +55,9 @@ void SVD::predictRatings() {
 			pRs->addRatings(predRating);
 		}
 	}
-	return;
+	cout << "Calculating RMSE" << endl;
+	double rmse = pRs->RMSE();
+	return rmse;
 }
 
 
