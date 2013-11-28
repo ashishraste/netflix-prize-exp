@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  CS5228Project
-//
-//  Created by OrangeR on 8/11/13.
-//  Copyright (c) 2013 OrangeR. All rights reserved.
-//
-
 #include <iostream>
 #include <string>
 #include "Config.h"
@@ -13,6 +5,7 @@
 #include "MovieRatings.h"
 #include "Database.h"
 #include "BaselinePredictor.h"
+#include "SVD.h"
 
 using namespace std;
 
@@ -41,7 +34,14 @@ int main(int argc, const char * argv[])
     mRs->computeAllBias();
     uRs->computeAllBias(mRs);
 
+//    vector<uRatings> userRs = (*uRs)[1];
+//    cout << "num of ratings: " << userRs.size() << endl;
+//    for (int i=0; i < userRs.size(); ++i) {
+//    	cout << "movieId: " << userRs.at(i).getId()  <<  "\trating: " << userRs.at(i).getValue()  << endl;
+//    }
+
     BaselinePredictor *bp = NULL;
+    SVD *svd = NULL;
 
     int predType;
     cout << "We have the following predictors, choose one: \n1. Baseline predictor \n2. KNN \n3. SVD \n4. KNNSVD blend" << endl;
@@ -49,15 +49,19 @@ int main(int argc, const char * argv[])
 
     switch (predType) {
     	case 1:
-    		{
-    			cout << "Running the Baseline predictor" << endl;
-    			bp = new BaselinePredictor(mRs, uRs, pRs);
-    			break;
-    		}
+    	{
+    		cout << "Running the Baseline predictor" << endl;
+    		bp = new BaselinePredictor(mRs, uRs, pRs);
+    		break;
+    	}
     	case 2:
     		break;
     	case 3:
+    	{
+    		cout << "Running the SVD predictor" << endl;
+    		svd = new SVD(mRs, uRs, pRs);
     		break;
+    	}
     	case 4:
     		break;
     	default:
@@ -74,6 +78,7 @@ int main(int argc, const char * argv[])
     delete pRs;
 
     if (NULL != bp) delete bp;
+    if (NULL != svd) delete svd;
 
     return 0;
 }

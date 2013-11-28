@@ -1,7 +1,7 @@
 #include "BaselinePredictor.h"
 
 BaselinePredictor::BaselinePredictor(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs)
- 				: Algorithm(), mRs(mRs), uRs(uRs), pRs(pRs), currentMovieId(0)
+ 				: Algorithm(), mRs(mRs), uRs(uRs), pRs(pRs)
 {
 	predictRatings();
 }

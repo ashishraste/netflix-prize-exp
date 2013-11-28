@@ -30,7 +30,7 @@ typedef struct uRatings{
     }
 }uRatings;
 
-class UserRatings:public Ratings{
+class UserRatings: public Ratings{
 private:
     double means[USER_NUM];
     double std_devs[USER_NUM];

@@ -1,5 +1,5 @@
-#ifndef BASELINEPREDICTOR_H_
-#define BASELINEPREDICTOR_H_
+#ifndef CS5228Project_BaselinePredictor_h
+#define CS5228Project_BaselinePredictor_h
 
 #include "Algorithm.h"
 
@@ -14,7 +14,6 @@ private:
 	MovieRatings *mRs;
 	UserRatings *uRs;
 	ProbeRatings *pRs;
-	uInt currentMovieId;
 };
 
-#endif /* BASELINEPREDICTOR_H_ */
+#endif /* CS5228Project_BaselinePredictor_h */
