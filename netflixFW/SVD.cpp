@@ -1,10 +1,24 @@
 #include "SVD.h"
 
-SVD::SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs): mRs(mRs), uRs(uRs),
+SVD::SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs): Algorithm(), mRs(mRs), uRs(uRs),
 	pRs(pRs), currentMovieId(0)
-{}
+{
+	for (int f = 0; f < MAX_FEATURES; ++f)
+	{
+		for (int i = 0; i < MOVIE_NUM; ++i)
+			movieFeatures[f][i] = (float)INIT;
+		for (int i = 0; i < USER_NUM; i++)
+			userFeatures[f][i] = (float)INIT;
+	}
+	for (int cacheId = 0; cacheId < MAX_RATINGS; ++cacheId)
+		cache[cacheId] = 0.0;
 
-SVD::~SVD() {}
+	calculateFeatures();
+	predictRatings();
+}
+
+SVD::~SVD()
+{}
 
 void SVD::determine() {
 
@@ -12,17 +26,28 @@ void SVD::determine() {
 
 
 void SVD::predictRatings() {
+	std::vector<mRatings> realpRs;
 
 }
 
 void SVD::calculateFeatures() {
-	float userFeatures[MAX_FEATURES][USER_NUM];   	// Array of features by user
-	float movieFeatures[MAX_FEATURES][MOVIE_NUM];  	// Array of features by movie
-	float cache[RATINGS_NUM];
-
-	double err, p, sq, rmse_last, rmse = 2.0;
+	double err, p, sq, prevRmse, rmse = 2.0;
 	float cf, mf;
 
+	uInt movieId, userId;
+	for (int f = 0; f < 2 && f < MAX_FEATURES; ++f) {
+		cout << "Calculating feature: " << f << endl;
+
+		for (int e = 0; (e < MIN_EPOCHS) || (rmse <= prevRmse - MIN_IMPROVEMENT); ++e) {
+			sq = 0;
+		    prevRmse = rmse;
+		    int cacheId = 0;
+		    for (int i = 0; i < USER_NUM; ++i) {
+
+		    }
+		}
+
+	}
 
 
 }

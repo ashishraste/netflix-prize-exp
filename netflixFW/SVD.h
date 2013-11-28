@@ -13,20 +13,16 @@
 #define LRATE           0.001         // Learning rate parameter
 #define K               0.015         // Regularization parameter used to minimize over-fitting
 
-#include "MovieRatings.h"
-#include "UserRatings.h"
-#include "ProbeRatings.h"
-#include "Database.h"
-#include "Helper.h"
-#include "Config.h"
+#include "Algorithm.h"
 
-class SVD {
+class SVD : Algorithm {
 public:
 	SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs);
 	virtual ~SVD();
 
-	void determine();
 	void predictRatings();
+
+	void determine();
 	void calculateFeatures();
 
 private:
@@ -34,6 +30,10 @@ private:
 	MovieRatings *mRs;
 	UserRatings *uRs;
 	ProbeRatings *pRs;
+
+	float userFeatures[MAX_FEATURES][USER_NUM];   	// Array of features by user
+	float movieFeatures[MAX_FEATURES][MOVIE_NUM];  	// Array of features by movie
+	float cache[RATINGS_NUM];
 };
 
 #endif /* CS5228Project_Algorithm_h */
