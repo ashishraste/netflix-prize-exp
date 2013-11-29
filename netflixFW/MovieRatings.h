@@ -2,7 +2,6 @@
 #define CS5228Project_MovieUserRatings_h
 #include "Ratings.h"
 #include <vector>
-
 const uByte UID_MASK = 0x07;
 const uByte RATING_MASK = 0x0F;
 typedef struct mRatings{
@@ -29,7 +28,7 @@ typedef struct mRatings{
         userIdLo = 0;
         value = 0;
     }
-    
+
     uInt getId()
     {
         return (userIdHi * 8) + userIdLo;
@@ -46,6 +45,18 @@ typedef struct mRatings{
     {
         userIdHi = uId >> 3;
         userIdLo = uId & UID_MASK;
+    }
+    
+    uInt getSortingV()
+    {
+        return getId();
+    }
+    mRatings operator=(const mRatings &source)
+    {
+        userIdHi = source.userIdHi;
+        userIdLo = source.userIdLo;
+        value = source.value;
+        return source;
     }
 }mRatings;
 

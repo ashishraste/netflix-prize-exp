@@ -6,8 +6,8 @@
 
 #include "SVD.h"
 
-SVD::SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs)
-	: Algorithm(), mRs(mRs), uRs(uRs), pRs(pRs)
+SVD::SVD(MovieRatings *mRs, ProbeRatings *pRs)
+	: Algorithm(), mRs(mRs), pRs(pRs)
 {
 	for (int f = 0; f < MAX_FEATURES; ++f) {
 		for (int i = 0; i < MOVIE_NUM; ++i)

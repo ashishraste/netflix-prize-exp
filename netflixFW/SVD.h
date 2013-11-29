@@ -15,9 +15,9 @@
 #define LRATE           0.001         // Learning rate parameter
 #define K               0.015         // Regularization parameter used to minimize over-fitting
 
-class SVD : Algorithm {
+class SVD : public Algorithm {
 public:
-	SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs);
+	SVD(MovieRatings *mRs, ProbeRatings *pRs);
 	virtual ~SVD();
 
 	double predictRatings();
@@ -29,7 +29,6 @@ public:
 
 private:
 	MovieRatings *mRs;
-	UserRatings *uRs;
 	ProbeRatings *pRs;
 
 	float userFeatures[MAX_FEATURES][USER_NUM];   	// Array of features by user

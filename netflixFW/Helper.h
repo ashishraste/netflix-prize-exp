@@ -4,14 +4,17 @@
 #include <vector>
 #include <typeinfo>
 #include <math.h>
+#include <limits>
 #include "Config.h"
 #include "ProbeRatings.h"
+
 
 using namespace::std;
 
 template<typename T>
 inline int binarySearch(vector<T>& containers, T& item)
 {
+    
     if(containers.size() == 0)
         return 0;
     
@@ -19,28 +22,27 @@ inline int binarySearch(vector<T>& containers, T& item)
     int end = int(containers.size() - 1);
     int mid = 0;
     
-    uInt newId = item.getId();
     while(start <= end)
     {
         mid = (start + end) / 2;
-        uInt currentId = containers.at(mid).getId();
-        if(newId == currentId)
+        if(item.getSortingV() == containers.at(mid).getSortingV())
             break;
-        else if(newId < currentId)
+        else if(item.getSortingV() < containers.at(mid).getSortingV())
             end = mid - 1;
         else
             start = mid + 1;
+
     }
     
     return mid;
 }
-
+//inline int binarySearch(
 template<typename T>
 inline void insert(vector<T> & containers, T& item, int index)
 {
-    if(containers.size() == 0 || containers.at(index).getId() > item.getId())
+    if(containers.size() == 0 || containers.at(index).getSortingV() > item.getSortingV())
         containers.insert(containers.begin() + index, item);
-    else if(containers.at(index).getId() < item.getId())
+    else if(containers.at(index).getSortingV() < item.getSortingV())
     {
         if(index == containers.size() - 1)
             containers.push_back(item);
@@ -50,4 +52,6 @@ inline void insert(vector<T> & containers, T& item, int index)
 }
 
 int strToInt(string str);
+
+string genTimeStamp();
 #endif

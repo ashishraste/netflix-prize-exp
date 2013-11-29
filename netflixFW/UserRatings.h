@@ -1,5 +1,6 @@
 #ifndef CS5228Project_UserMovieRatings_h
 #define CS5228Project_UserMovieRatings_h
+
 #include "Ratings.h"
 #include "MovieRatings.h"
 #include <vector>
@@ -28,9 +29,21 @@ typedef struct uRatings{
     {
         return int(value);
     }
+    
+    uInt getSortingV()
+    {
+        return getId();
+    }
+    
+    uRatings operator=(const uRatings &source)
+    {
+        movieId = source.movieId;
+        value = source.value;
+        return source;
+    }
 }uRatings;
 
-class UserRatings: public Ratings{
+class UserRatings:public Ratings{
 private:
     double means[USER_NUM];
     double std_devs[USER_NUM];

@@ -6,6 +6,7 @@
 #include "Database.h"
 #include "BaselinePredictor.h"
 #include "SVD.h"
+#include "KNN.h"
 
 using namespace std;
 
@@ -40,10 +41,10 @@ int main(int argc, const char * argv[])
 //    	cout << "movieId: " << userRs.at(i).getId()  <<  "\trating: " << userRs.at(i).getValue()  << endl;
 //    }
 
-    BaselinePredictor *bp = NULL;
-    SVD *svd = NULL;
+    Algorithm *al = NULL;
 
     int predType;
+    double rmse;
     cout << "We have the following predictors, choose one: \n1. Baseline predictor \n2. KNN \n3. SVD \n4. KNNSVD blend" << endl;
     cin >> predType;
 
@@ -51,15 +52,19 @@ int main(int argc, const char * argv[])
     	case 1:
     	{
     		cout << "Running the Baseline predictor" << endl;
-    		bp = new BaselinePredictor(mRs, uRs, pRs);
+    		al = new BaselinePredictor(mRs, uRs, pRs);
     		break;
     	}
     	case 2:
+    	{
+    		cout << "Running KNN predictor, Pearson correlation for item-item similarity, K=50" << endl;
+    		al = new KNN(mRs, uRs, pRs, 50);
     		break;
+    	}
     	case 3:
     	{
     		cout << "Running the SVD predictor" << endl;
-    		svd = new SVD(mRs, uRs, pRs);
+    		al = new SVD(mRs, pRs);
     		break;
     	}
     	case 4:
@@ -68,13 +73,14 @@ int main(int argc, const char * argv[])
     		cout << "option number is wrong, please try again!" << endl;
     		break;
     }
+    rmse = al->predictRatings();
+    cout << "RMSE: " << rmse << endl;
 
     delete mRs;
     delete uRs;
     delete pRs;
 
-    if (NULL != bp) delete bp;
-    if (NULL != svd) delete svd;
+    if (NULL != al) delete al;
 
     return 0;
 }

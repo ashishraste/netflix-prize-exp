@@ -1,13 +1,15 @@
 CC = g++
 
-SOURCE = main.cpp Algorithm.cpp Algorithm.h Database.cpp Database.h Config.h Helper.cpp Helper.h MovieRatings.cpp MovieRatings.h UserRatings.cpp UserRatings.h ProbeRatings.cpp ProbeRatings.h Ratings.h BaselinePredictor.cpp BaselinePredictor.h SVD.cpp SVD.h
+CFLAGS = -Wall -g
 
-OBJ = main.o Algorithm.o Database.o Helper.o MovieRatings.o UserRatings.o ProbeRatings.o BaselinePredictor.o SVD.o
+SOURCE = main.cpp Algorithm.cpp Algorithm.h Database.cpp Database.h Config.h Helper.cpp Helper.h MovieRatings.cpp MovieRatings.h UserRatings.cpp UserRatings.h ProbeRatings.cpp ProbeRatings.h Ratings.h BaselinePredictor.cpp BaselinePredictor.h SVD.cpp SVD.h KNN.cpp KNN.h
+
+OBJ = main.o Algorithm.o Database.o Helper.o MovieRatings.o UserRatings.o ProbeRatings.o BaselinePredictor.o SVD.o KNN.o
 
 all : main
 
 main : $(OBJ)
-	$(CC) -g -o fw $(OBJ) 
+	$(CC) $(CFLAGS) -o fw $(OBJ) 
 
 main.o : main.cpp Algorithm.h Database.h MovieRatings.h UserRatings.h Helper.h Config.h
 	$(CC) -c main.cpp -o main.o
@@ -32,6 +34,9 @@ UserRatings.o : UserRatings.cpp UserRatings.h
 
 BaselinePredictor.o : BaselinePredictor.cpp BaselinePredictor.h
 	$(CC) -c BaselinePredictor.cpp
+
+KNN.o : KNN.cpp KNN.h
+	$(CC) -c KNN.cpp
 
 SVD.o : SVD.cpp SVD.h
 	$(CC) -c SVD.cpp
