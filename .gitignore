@@ -2,5 +2,8 @@ notes.dat
 netflixFW/.cproject
 netflixFW/.project
 netflixFW/CS5228Project.1
+netflixFW/*.o
+netflixFW/fw
+netlfixFW/clear
 
 .settings

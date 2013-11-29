@@ -86,7 +86,7 @@ void SVD::calculateFeatures() {
 	int userId;
 	std::vector<mRatings> movieRs;
 
-	for (int f = 0; f < 2 && f < MAX_FEATURES; ++f) {
+	for (int f = 0; f < 4 && f < MAX_FEATURES; ++f) {
 		cout << "Calculating feature " << f << endl;
 		for (int e = 0; (e < MIN_EPOCHS) || (rmse <= prevRmse - MIN_IMPROVEMENT); ++e) {
 			sq = 0;
