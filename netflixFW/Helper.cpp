@@ -15,3 +15,22 @@ int strToInt(string str)
     
     return num;
 }
+
+string genTimeStamp()
+{
+    time_t rawtime;
+    struct tm *timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    
+    //cout << asctime(timeinfo) << endl;
+    string str = string(asctime(timeinfo));
+    for(int i = 0; i < str.length() ; i ++)
+    {
+        string tmp = "_";
+        if(str.at(i) == ' ')
+            str = str.replace(i, 1, tmp);
+    }
+    str = str.substr(0, str.find_last_of('_'));
+    return str;
+}

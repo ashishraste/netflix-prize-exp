@@ -1,11 +1,3 @@
-//
-//  KNN.h
-//  CS5228Project
-//
-//  Created by OrangeR on 28/11/13.
-//  Copyright (c) 2013 OrangeR. All rights reserved.
-//
-
 #ifndef CS5228Project_KNN_h
 #define CS5228Project_KNN_h
 #include "Algorithm.h"
@@ -77,7 +69,7 @@ typedef struct objectSim{
     uInt itemId;
     uByte rating;
     float sim;
-    
+
     objectSim()
     {
         itemId = 0;
@@ -104,8 +96,8 @@ typedef struct objectSim{
 }objectSim;
 
 typedef struct sim_cache{
-    
-    
+
+
 }sim_cache;
 
 class KNN:public Algorithm
@@ -129,7 +121,7 @@ public:
     KNN();
     KNN(MovieRatings *mrs, UserRatings *urs, ProbeRatings *prs, int k, sim_type simT = PEARSONCC_SIM_M);
     ~KNN();
-    
+
     virtual double predictRatings();
 };
 

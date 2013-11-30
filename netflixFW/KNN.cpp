@@ -1,11 +1,3 @@
-//
-//  KNN.cpp
-//  CS5228Project
-//
-//  Created by OrangeR on 28/11/13.
-//  Copyright (c) 2013 OrangeR. All rights reserved.
-//
-
 #include "KNN.h"
 double PearsonCC_Sim_M::computeSim(uInt id1, uInt id2)
 {

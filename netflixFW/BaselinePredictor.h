@@ -4,6 +4,8 @@
 #include "Algorithm.h"
 #include "KNN.h"
 
+#define SIM_FACTOR 50
+
 enum baseline_type {
 	NORMAL_BASELINE,
 	GLOBAL_BASELINE,

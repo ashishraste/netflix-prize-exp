@@ -15,7 +15,8 @@ double BaselinePredictor::predictRatings() {
 		cout << "Global Baseline on the run" << endl;
 	for (uInt mIdx = 0; mIdx < pRs->getPredictedMovieNum(); ++mIdx)
 	{
-		cout << "movie " << mIdx << endl;
+//		double err = 0, errSum = 0;
+		cout << "movie " << mIdx+1 << endl;
 		uShort movieId;
 		pRs->getRatings(mIdx, movieId, realpRs);
 		for (std::vector<mRatings>::iterator it = realpRs.begin(); it != realpRs.end(); ++ it)
@@ -32,7 +33,9 @@ double BaselinePredictor::predictRatings() {
 					predRating = calGBaselineEst(movieId, userId);
 					break;
 			}
-			// cout << "MovieId: " << movieId << "\tUserId: " << userId << "\trating: " << predRating << endl;
+//			err = it->getValue() - predRating ;
+//			errSum += (err * err);
+//			cout << it->getValue() << " " << predRating << " " << err*err  << endl;
 			pRs->addRatings(predRating);
 		}
 		// realpRs.clear();
@@ -55,25 +58,26 @@ double BaselinePredictor::calBaselineEst(uInt movieId, uInt userId) {
 
 double BaselinePredictor::calGBaselineEst(uInt movieId, uInt userId) {
 	PearsonCC_Sim_M *pCC = new PearsonCC_Sim_M(mRs, uRs);
-	double m_bias = mRs->getBias(movieId);
 	double u_bias = uRs->getBias(userId);
-	double baselineEst = (double)G_MEAN + m_bias + u_bias;
-
+	double baselineEst = (double)G_MEAN + mRs->getBias(movieId) + u_bias;
 	double gEst = 0;
-	double baseRating, oRating;
 
 	vector<uRatings> userRs;
 	uRs->getRatings(userId, userRs); 		// ratings by userId
 
+	// Rui = Bui + [Sum(Ruj - Buj) * Wij]
 	for(vector<uRatings>::iterator it = userRs.begin(); it != userRs.end(); ++it)
 	{
 		uInt mId = it->getId();
-		oRating = (double)it->getValue();
-		baseRating = (double)G_MEAN + mRs->getBias(mId) + u_bias;
-		gEst += ((oRating - baseRating) * pCC->computeSim(mId, movieId));
+		double diff = (double)it->getValue() - (double)G_MEAN - mRs->getBias(mId) - u_bias;
+		gEst += (diff * (pCC->computeSim(mId, movieId) / SIM_FACTOR));
 	}
-	// userRs.clear();
-	delete pCC;
 	gEst += baselineEst;
+
+	delete pCC;
+
+	if (gEst > 5) gEst = 5;
+	else if (gEst < 1) gEst = 1;
+
 	return gEst;
 }

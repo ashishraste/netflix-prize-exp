@@ -42,7 +42,6 @@ int main(int argc, const char * argv[])
 //    }
 
     Algorithm *al = NULL;
-
     int predType;
     double rmse;
     cout << "We have the following predictors, choose one: \n1. Baseline predictor \n2. KNN \n3. SVD \n4. KNNSVD blend" << endl;
@@ -81,7 +80,6 @@ int main(int argc, const char * argv[])
     delete pRs;
 
     if (NULL != al) delete al;
-
     return 0;
 }
 
