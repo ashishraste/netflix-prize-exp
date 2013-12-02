@@ -2,9 +2,9 @@ CC = g++
 
 CFLAGS = -Wall -g
 
-SOURCE = main.cpp Algorithm.cpp Algorithm.h Database.cpp Database.h Config.h Helper.cpp Helper.h MovieRatings.cpp MovieRatings.h UserRatings.cpp UserRatings.h ProbeRatings.cpp ProbeRatings.h Ratings.h BaselinePredictor.cpp BaselinePredictor.h SVD.cpp SVD.h KNN.cpp KNN.h
+SOURCE = main.cpp Algorithm.cpp Algorithm.h Database.cpp Database.h Config.h Helper.cpp Helper.h MovieRatings.cpp MovieRatings.h UserRatings.cpp UserRatings.h ProbeRatings.cpp ProbeRatings.h Ratings.h BaselinePredictor.cpp BaselinePredictor.h SVD.cpp SVD.h KNN.cpp KNN.h Similarity.cpp Similarity.h
 
-OBJ = main.o Algorithm.o Database.o Helper.o MovieRatings.o UserRatings.o ProbeRatings.o BaselinePredictor.o SVD.o KNN.o
+OBJ = main.o Algorithm.o Database.o Helper.o MovieRatings.o UserRatings.o ProbeRatings.o BaselinePredictor.o SVD.o KNN.o Similarity.o
 
 all : main
 
@@ -40,6 +40,9 @@ KNN.o : KNN.cpp KNN.h
 
 SVD.o : SVD.cpp SVD.h
 	$(CC) -c SVD.cpp
+
+Similarity.o : Similarity.cpp Similarity.h
+	$(CC) -c Similarity.cpp
 
 tgz : $(SOURCE)
 	tar -cvvf fw.tar $(SOURCE) Makefile

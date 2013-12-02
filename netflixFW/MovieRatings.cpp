@@ -1,3 +1,11 @@
+//
+//  MovieRatings.cpp
+//  CS5228Project
+//
+//  Created by OrangeR on 15/11/13.
+//  Copyright (c) 2013 OrangeR. All rights reserved.
+//
+
 #include "MovieRatings.h"
 
 MovieRatings::MovieRatings():Ratings()
@@ -19,7 +27,6 @@ MovieRatings::~MovieRatings()
 {
     for(int i = 0; i < MOVIE_NUM; i++)
         delete perMovieRatings[i];
-    // Ratings::~Ratings();
 }
 
 uInt MovieRatings::getMovieNum()
@@ -161,11 +168,6 @@ double* MovieRatings::getAllStdDevs()
         return NULL;
 }
 
-void MovieRatings::setBias(uInt mId, double bi)
-{
-    bias[mId - 1] = bi;
-}
-
 void MovieRatings::computeAllBias(){
 	if (isBiasComputed)
 		return;
@@ -181,12 +183,17 @@ void MovieRatings::computeAllBias(){
 	}
 }
 
+void MovieRatings::setBias(uInt mId, double bi)
+{
+    bias[mId - 1] = bi;
+}
+
 double MovieRatings::getBias(uInt mId)
 {
     if(isBiasComputed)
         return bias[mId - 1];
     else
-    	return -1;
+        return -1;
 }
 
 double* MovieRatings::getAllBias()

@@ -1,3 +1,11 @@
+//
+//  ProbeRatings.cpp
+//  CS5228Project
+//
+//  Created by OrangeR on 26/11/13.
+//  Copyright (c) 2013 OrangeR. All rights reserved.
+//
+
 #include "ProbeRatings.h"
 #include <sstream>
 #include <ctime>
@@ -7,12 +15,10 @@
 #include <fstream>
 #include <sys/stat.h>
 using namespace std;
-
 ProbeRatings::ProbeRatings():Ratings()
 {
     realRatings = new std::vector< std::vector<mRatings>* >();
     predictedRatings = new std::vector<double>();
-    m_rmse = 0;
 }
 
 ProbeRatings::~ProbeRatings()
@@ -54,13 +60,13 @@ void ProbeRatings::addRatings(uShort movieId, std::vector<mRatings> &pRs)
 
 void ProbeRatings::getRatings(uInt idx, uShort &movieId, std::vector<mRatings> &pRs)
 {
-    pRs.clear();
+    
     if(idx > mIds.size())
     {
         std::cerr << "ProbeRatings::getRatings, index out of range!" << std::endl;
         return ;
     }
-    pRs.clear();
+    //pRs.clear();
     movieId = mIds.at(idx);
     for(std::vector<mRatings>::iterator it = realRatings->at(idx)->begin(); it != realRatings->at(idx)->end(); ++ it)
     {
@@ -85,10 +91,10 @@ void ProbeRatings::dumpRatings(uInt idx)
     }
     else
     {
-        // std::cout << "MovieId " << mIds.at(idx) << ":" << std::endl;
+        std::cout << "MovieId " << mIds.at(idx) << ":" << std::endl;
         for(std::vector<mRatings>::iterator it = realRatings->at(idx)->begin(); it != realRatings->at(idx)->end(); ++ it)
         {
-            // std::cout << it->getId() << "," << it->getValue() << std::endl;
+            std::cout << it->getId() << "," << it->getValue() << std::endl;
         }
     }
 }
@@ -101,7 +107,7 @@ double ProbeRatings::RMSE()
     {
         num += realRatings->at(i)->size();
     }
-
+    
     if(num != predictedRatings->size())
     {
         std::cerr << "Prediction is incomplete!" << std::endl;
@@ -125,13 +131,13 @@ double ProbeRatings::RMSE()
 
 void ProbeRatings::savePredictions(const std::string &path, const std::string &file_name)
 {
-
+    
     uInt num = 0;
     for(int i = 0; i < realRatings->size(); i ++)
     {
         num += realRatings->at(i)->size();
     }
-
+    
     if(num != predictedRatings->size())
     {
         std::cerr << "Prediction is incomplete!" << std::endl;
@@ -140,7 +146,7 @@ void ProbeRatings::savePredictions(const std::string &path, const std::string &f
     else
     {
         //check the directory
-
+    
         DIR *dp;
         if((dp = opendir(path.c_str())) == NULL){
             if(mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0)
@@ -150,9 +156,9 @@ void ProbeRatings::savePredictions(const std::string &path, const std::string &f
             }
         }
         closedir(dp);
-
+    
         ofstream outFile((path + file_name).c_str(), ios::out);
-
+    
         if(outFile.good())
         {
             ostringstream convert;

@@ -1,3 +1,11 @@
+//
+//  Helper.h
+//  CS5228Project
+//
+//  Created by OrangeR on 15/11/13.
+//  Copyright (c) 2013 OrangeR. All rights reserved.
+//
+
 #ifndef CS5228Project_Helper_h
 #define CS5228Project_Helper_h
 #include <string>
@@ -6,8 +14,6 @@
 #include <math.h>
 #include <limits>
 #include "Config.h"
-#include "ProbeRatings.h"
-
 
 using namespace::std;
 

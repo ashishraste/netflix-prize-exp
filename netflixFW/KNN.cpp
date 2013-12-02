@@ -1,147 +1,28 @@
+//
+//  KNN.cpp
+//  CS5228Project
+//
+//  Created by OrangeR on 28/11/13.
+//  Copyright (c) 2013 OrangeR. All rights reserved.
+//
+
 #include "KNN.h"
-double PearsonCC_Sim_M::computeSim(uInt id1, uInt id2)
-{
-    double sim = 0;
-    vector<mRatings> *mrs1;
-    vector<mRatings> *mrs2;
-    //take the smaller vector as the main vector to loop
-    (*mRs)[id1].size() < (*mRs)[id2].size() ? mrs1 = &(*mRs)[id1],mrs2 = &(*mRs)[id2] : mrs1 = &(*mRs)[id2],mrs2 = &(*mRs)[id1];
-    
-    vector<uInt> indices_1;
-    vector<uInt> indices_2;
-    for(int i = 0; i < mrs1->size(); i ++)
-    {
-        uInt idx = binarySearch<mRatings>(*mrs2, mrs1->at(i));
-        if(mrs2->at(idx).getId() == mrs1->at(i).getId())
-        {
-            indices_1.push_back(i);
-            indices_2.push_back(idx);
-        }
-    }
-    double sum_1 = 0;
-    double sum_2 = 0;
-    for(int i = 0; i < indices_1.size(); i ++)
-    {
-        double mean_1 = uRs->getMean(mrs1->at(indices_1.at(i)).getId());
-        double mean_2 = uRs->getMean(mrs2->at(indices_2.at(i)).getId());
-        double rui_1 = mrs1->at(indices_1.at(i)).getValue();
-        double rui_2 = mrs2->at(indices_2.at(i)).getValue();
-        sim += (rui_1 - mean_1) * (rui_2 - mean_2);
-        sum_1 += pow(rui_1 - mean_1, 2);
-        sum_2 += pow(rui_2 - mean_2, 2);
-    }
-    if(indices_1.size() != 0)
-    {
-        //cout << sim / (sqrt(sum_1) * sqrt(sum_2)) << endl;
-        return sim / (sqrt(sum_1) * sqrt(sum_2));
-    }
-    else
-        return 0;
-}
-
-double PearsonCC_Sim_U::computeSim(uInt id1, uInt id2)
-{
-    double sim = 0;
-    vector<uRatings> *urs1;
-    vector<uRatings> *urs2;
-    //take the smaller vector as the main vector to loop
-    (*uRs)[id1].size() < (*uRs)[id2].size() ? urs1 = &(*uRs)[id1],urs2 = &(*uRs)[id2] : urs1 = &(*uRs)[id2],urs2 = &(*uRs)[id1];
-    
-    vector<uInt> indices_1;
-    vector<uInt> indices_2;
-    for(int i = 0; i < urs1->size(); i ++)
-    {
-        uInt idx = binarySearch<uRatings>(*urs2, urs1->at(i));
-        if(urs2->at(idx).getId() == urs1->at(i).getId())
-        {
-            indices_1.push_back(i);
-            indices_2.push_back(idx);
-        }
-    }
-    double sum_1 = 0;
-    double sum_2 = 0;
-    for(int i = 0; i < indices_1.size(); i ++)
-    {
-        double mean_1 = uRs->getMean(urs1->at(indices_1.at(i)).getId());
-        double mean_2 = uRs->getMean(urs2->at(indices_2.at(i)).getId());
-        double rui_1 = urs1->at(indices_1.at(i)).getValue();
-        double rui_2 = urs2->at(indices_2.at(i)).getValue();
-        sim += (rui_1 - mean_1) * (rui_2 - mean_2);
-        sum_1 += pow(rui_1 - mean_1, 2);
-        sum_2 += pow(rui_2 - mean_2, 2);
-    }
-    if(indices_1.size() != 0)
-    {
-        cout << sim / (sqrt(sum_1) * sqrt(sum_2)) << endl;
-        return sim / (sqrt(sum_1) * sqrt(sum_2));
-    }
-    else
-        return 0;
-}
-
-double Cosine_Sim_M::computeSim(uInt id1, uInt id2)
-{
-    double sim = 0;
-    double len1 = 0;
-    double len2 = 0;
-    vector<mRatings> *mrs1;
-    vector<mRatings> *mrs2;
-    
-    (*mRs)[id1].size() > (*mRs)[id2].size() ? mrs1 = &(*mRs)[id1],mrs2 = &(*mRs)[id2] : mrs1 = &(*mRs)[id2],mrs2 = &(*mRs)[id1];
-    
-    uInt idx = 0;
-    for(int i = 0; i < mrs1->size(); i ++)
-    {
-        len1 += pow(mrs1->at(i).getValue(), 2);
-        if(idx < mrs2->size())
-        {
-            uInt position = binarySearch<mRatings>(*mrs1, mrs2->at(idx));
-            if(mrs2->at(position).getId() == mrs1->at(i).getId())
-                sim += mrs2->at(position).getValue() * mrs1->at(i).getValue();
-            len2 += pow(mrs2->at(i).getValue(), 2);
-            idx ++;
-        }
-    }
-    
-    return sim / (sqrt(len1) * sqrt(len2));
-}
-
-double Cosine_Sim_U::computeSim(uInt id1, uInt id2)
-{
-    double sim = 0;
-    double len1 = 0;
-    double len2 = 0;
-    vector<uRatings> *urs1;
-    vector<uRatings> *urs2;
-    
-    (*uRs)[id1].size() > (*uRs)[id2].size() ? urs1 = &(*uRs)[id1],urs2 = &(*uRs)[id2] : urs1 = &(*uRs)[id2],urs2 = &(*uRs)[id1];
-    
-    uInt idx = 0;
-    for(int i = 0; i < urs1->size(); i ++)
-    {
-        len1 += pow(urs1->at(i).getValue(), 2);
-        if(idx < urs2->size())
-        {
-            uInt position = binarySearch<uRatings>(*urs1, urs2->at(idx));
-            if(urs2->at(position).getId() == urs1->at(i).getId())
-                sim += urs2->at(position).getValue() * urs1->at(i).getValue();
-            len2 += pow(urs2->at(i).getValue(), 2);
-            idx ++;
-        }
-    }
-    
-    return sim / (sqrt(len1) * sqrt(len2));
-}
-
+/******************************KNN********************************/
 KNN::KNN():Algorithm() {}
 
-KNN::KNN(MovieRatings *mrs, UserRatings *urs, ProbeRatings *prs, int k, sim_type simT):Algorithm()
+KNN::KNN(MovieRatings *mrs, UserRatings *urs, ProbeRatings *prs, SVD *psvd, int k, sim_type simT):Algorithm()
 {
     mRs = mrs;
     uRs = urs;
     pRs = prs;
     k_value = k;
     sim_T = simT;
+
+    pmovieSimCache = new float[M_CACHE_SIZE];
+    for(uInt i = 0; i < M_CACHE_SIZE; i ++)
+    {
+        pmovieSimCache[i] = -2;
+    }
     switch (simT) {
         case PEARSONCC_SIM_M:
             sim = new PearsonCC_Sim_M(mRs, uRs);
@@ -155,16 +36,26 @@ KNN::KNN(MovieRatings *mrs, UserRatings *urs, ProbeRatings *prs, int k, sim_type
         case COS_SIM_U:
             sim = new Cosine_Sim_U(uRs);
             break;
+        case SVD_FEATURE_SIM_M:
+            sim = new SVD_Sim_M(psvd);
+            break;
+        case SVD_FEATURE_SIM_U:
+            sim = new SVD_Sim_U(psvd);
+            break;
         default:
             break;
     }
+    filePath = DATABASE_PATH + (sim_T == PEARSONCC_SIM_M ? MOVIEPCCSIMFILE : MOVIECOSSIMFILE);
+    if(simT != SVD_FEATURE_SIM_M && simT != SVD_FEATURE_SIM_U)
+        loadAllMoviePairSimilarities();
 }
 KNN::~KNN()
 {
+    delete []pmovieSimCache;
     if(pMovieKNN != NULL) delete pMovieKNN;
     if(pUserKNN != NULL) delete pUserKNN;
+    
     if (sim != NULL) delete  sim;
-    //Algorithm::~Algorithm();
 }
 
 void KNN::computeMovieKNN(uInt mId, uInt uId)
@@ -174,8 +65,7 @@ void KNN::computeMovieKNN(uInt mId, uInt uId)
     {
         if(it->getId() != mId)
         {
-            //if the both rated item'size is small then the K value, just calculate all the similarities.
-            objectSim simTemp = objectSim(it->getId(), it->getValue(), sim->computeSim(mId, it->getId()));
+            objectSim simTemp = objectSim(it->getId(), it->getValue(), getMoviePairSim(mId, it->getId()));
             if(k_value >= (*uRs)[uId].size())
             {
                 pMovieKNN->push_back(simTemp);
@@ -192,12 +82,14 @@ void KNN::computeMovieKNN(uInt mId, uInt uId)
 }
 void KNN::computeUserKNN(uInt mId, uInt uId)
 {
+    /*
     pUserKNN->clear();
     for(vector<mRatings>::iterator it = (*mRs)[mId].begin(); it != (*mRs)[mId].end(); ++ it)
     {
         if(it->getId() != uId)
         {
-            objectSim simTemp = objectSim(it->getId(), it->getValue(), sim->computeSim(uId, it->getId()));
+            objectSim simTemp;
+
             if(k_value >= (*mRs)[uId].size())
             {
                 pUserKNN->push_back(simTemp);
@@ -211,11 +103,13 @@ void KNN::computeUserKNN(uInt mId, uInt uId)
             }
         }
     }
+     */
 }
 
 double KNN::runMoviePredictor()
 {
     pMovieKNN = new vector<objectSim>();
+
     //predict
     for(uInt i = 0; i < pRs->getPredictedMovieNum(); i ++)
     {
@@ -241,15 +135,19 @@ double KNN::runMoviePredictor()
             else
             {
                 predRatings = mRs->getMean(movieId) + predRatings / sim_sum;
+                if(predRatings > 5) predRatings = 5;
+                else if(predRatings < 1) predRatings = 1;
                 pRs->addRatings(predRatings);
             }
-            cout << movieId << " " << it->getId() << " " << predRatings << endl;
+            //cout << movieId << "\t" << it->getId() << "\t" << predRatings << endl;
         }
+        cout << "Movie " << movieId << endl;
     }
     return pRs->RMSE();
 }
 double KNN::runUserPredictor()
 {
+    /*
     pUserKNN = new vector<objectSim>();
     
     for(uInt i = 0; i < pRs->getPredictedMovieNum(); i ++)
@@ -276,13 +174,160 @@ double KNN::runUserPredictor()
             else
             {
                 predRatings = uRs->getMean(it->getId()) + predRatings / sim_sum;
+                if(predRatings > 5) predRatings = 5;
+                else if(predRatings < 1) predRatings = 1;
                 pRs->addRatings(predRatings);
             }
+            //cout << movieId << "\t" << it->getId() << "\t" << predRatings << endl;
         }
-    }
+        cout << "Movie " << movieId << endl;
+     }
     return pRs->RMSE();
+     */
+    return 0;
 }
 
+/*
+double KNN::getMovieSim(uInt mId1, uInt mId2)
+{
+    double similarity = 0;
+    uInt id_larger = 0;
+    uInt id_smaller = 0;
+
+    mId1 > mId2 ? id_larger = mId1, id_smaller = mId2 : id_larger = mId2, id_smaller = mId1;
+    sim_cache cacheUnit = sim_cache(id_larger, 0);
+    if(isCacheHit(*(pMovieCache[id_smaller - 1]), cacheUnit))
+    {
+        similarity = cacheUnit.sim;
+    }
+    else
+    {
+        similarity = sim->computeSim(id_smaller, id_larger);
+        cacheUnit.sim = similarity;
+        cacheSim(*pMovieCache[id_smaller -1], cacheUnit, mCacheUsed, M_CACHE_SIZE);
+    }
+
+    return similarity;
+}
+
+double KNN::getUserSim(uInt uId1, uInt uId2)
+{
+    double similarity = 0;
+    uInt id_larger = 0;
+    uInt id_smaller = 0;
+    
+    uId1 > uId2 ? id_larger = uId1, id_smaller = uId2 : id_larger = uId2, id_smaller = uId1;
+    sim_cache cacheUnit = sim_cache(id_larger, 0);
+    if(isCacheHit(*(pUserCache[id_smaller - 1]), cacheUnit))
+    {
+        similarity = cacheUnit.sim;
+    }
+    else
+    {
+        similarity = sim->computeSim(id_smaller, id_larger);
+        cacheUnit.sim = similarity;
+        cacheSim(*pUserCache[id_smaller -1], cacheUnit, uCacheUsed, U_CACHE_SIZE);
+    }
+    return similarity;
+}
+*/
+
+bool KNN::genAllMoviePairSimilarity()
+{
+    ofstream outFile(filePath.c_str(), ios::out|ios::binary);
+    if(outFile.good())
+    {
+        if(outFile.is_open())
+        {
+            float val = 0;
+            for(uInt i = 1; i <= MOVIE_NUM; i ++)
+            {
+                for(uInt j = i + 1; j <= MOVIE_NUM; j ++)
+                {
+                    //cout << i << "\t" << j << "\t" << getMoviePairSim(i, j) << endl;
+                    val = getMoviePairSim(i, j);
+                    outFile.write((char *)&val, sizeof(val));
+                }
+                cout << "MovieId :" << i << endl;
+            }
+        }
+        else
+        {
+            cout << "getAllMoviePairSimilarity" << endl;
+        }
+        outFile.close();
+    }
+    return true;
+}
+
+bool KNN::loadAllMoviePairSimilarities()
+{
+    ifstream inFile(filePath.c_str(), ios::in|ios::binary);
+    float val = 0;
+    if(inFile.good())
+    {
+        if(inFile.is_open())
+        {
+            while(!inFile.eof())
+            {
+                for(uInt i = 0; i < M_CACHE_SIZE; i ++)
+                {
+                    inFile.read((char *)&val, sizeof(val));
+                    if(val != 0.0f)
+                    {
+                        pmovieSimCache[i] = val;
+                    }
+                }
+            }
+        }
+        else
+        {
+            cout << "loadAllMovieSimilarities Failed!" << endl;
+        }
+        inFile.close();
+    }
+    else
+    {
+        cout << "File not exists" << endl;
+        genAllMoviePairSimilarity();
+    }
+    return true;
+}
+
+double KNN::getMoviePairSim(uInt mId1, uInt mId2)
+{
+    if(mId1 == mId2)
+        return 1;
+
+    uInt id_smaller, id_larger;
+
+    if(mId1 > mId2)
+    {
+        id_smaller = mId2;
+        id_larger = mId1;
+    }
+    else
+    {
+        id_smaller = mId1;
+        id_larger = mId2;
+    }
+    
+    uInt idx = 0;
+    uInt base = 0;
+    for(uInt i = 1; i < id_smaller; i ++)
+    {
+        base += i;
+    }
+    idx = MOVIE_NUM * (id_smaller - 1) - base + (id_larger - id_smaller) - 1;
+    
+    
+    if(pmovieSimCache[idx] < -1)
+    {
+        pmovieSimCache[idx] = float(sim->computeSim(id_smaller, id_larger));
+    }
+    
+    return pmovieSimCache[idx];
+}
 double KNN::predictRatings()
 {
     if(k_value > K_LIMIT)
@@ -290,17 +335,26 @@ double KNN::predictRatings()
         cerr << "K is too large, it should be from 1 to 500!" << endl;
         return -1;
     }
-    cout << "Runing KNN" << endl;
+    cout << "KNN is Running..." << endl;
+    double result = 0;
+    cout << genTimeStamp() << endl;
     switch(sim_T)
     {
         case PEARSONCC_SIM_M:
         case COS_SIM_M:
-            return runMoviePredictor();
+        case SVD_FEATURE_SIM_M:
+            result = runMoviePredictor();
+            break;
         case PEARSONCC_SIM_U:
         case COS_SIM_U:
-            return runUserPredictor();
+        case SVD_FEATURE_SIM_U:
+            result = runUserPredictor();
+            break;
         default:
             cerr << "Type error in KNN" << endl;
-            return - 1;
+            result = - 1;
     }
+    cout << "KNN Finished!!!" << endl;
+    cout << genTimeStamp() << endl;
+    return result;
 }

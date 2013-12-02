@@ -1,13 +1,20 @@
+//
+//  Ratings.h
+//  CS5228Project
+//
+//  Created by OrangeR on 15/11/13.
+//  Copyright (c) 2013 OrangeR. All rights reserved.
+//
+
 #ifndef CS5228Project_Ratings_h
 #define CS5228Project_Ratings_h
-
-#define G_MEAN              3.604
-#define USER_BIAS_PARAM     10
-#define MOVIE_BIAS_PARAM    25
 
 #include <iostream>
 #include <math.h>
 #include "Config.h"
+const double G_MEAN = 3.604;
+const uInt USER_BIAS_PARAM = 10;
+const uInt MOVIE_BIAS_PARAM = 25;
 
 class Ratings{
 private:

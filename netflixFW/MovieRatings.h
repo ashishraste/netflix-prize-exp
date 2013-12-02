@@ -1,3 +1,11 @@
+//
+//  MovieUserRatings.h
+//  CS5228Project
+//
+//  Created by OrangeR on 15/11/13.
+//  Copyright (c) 2013 OrangeR. All rights reserved.
+//
+
 #ifndef CS5228Project_MovieUserRatings_h
 #define CS5228Project_MovieUserRatings_h
 #include "Ratings.h"
@@ -91,7 +99,7 @@ public:
     void dumpAllStdDevs();
     double getStdDev(uInt mId);
     double* getAllStdDevs();
-
+    
     void computeAllBias();
     void setBias(uInt mId, double bi);
     double getBias(uInt mId);

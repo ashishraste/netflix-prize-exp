@@ -25,8 +25,6 @@ UserRatings::~UserRatings()
 {
     for(int i = 0; i < USER_NUM; i ++)
         delete perUserRatings[i];
-    
-    // Ratings::~Ratings();
 }
 
 uInt UserRatings::getUserNum()

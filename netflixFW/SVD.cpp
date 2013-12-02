@@ -6,8 +6,7 @@
 
 #include "SVD.h"
 
-SVD::SVD(MovieRatings *mRs, ProbeRatings *pRs)
-	: Algorithm(), mRs(mRs), pRs(pRs)
+SVD::SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs, uInt fNum): Algorithm(), mRs(mRs), uRs(uRs), pRs(pRs), feature_num(fNum)
 {
 	for (int f = 0; f < MAX_FEATURES; ++f) {
 		for (int i = 0; i < MOVIE_NUM; ++i)
@@ -17,6 +16,8 @@ SVD::SVD(MovieRatings *mRs, ProbeRatings *pRs)
 	}
 	for (int cacheId = 0; cacheId < MAX_RATINGS; ++cacheId)
 		cache[cacheId] = 0.0;
+
+	bp = new BaselinePredictor(mRs, uRs, pRs);
 
 	calculateFeatures();
 	cout << "\nfinished calculating the features.. whoof~!" << endl;
@@ -61,7 +62,8 @@ double SVD::predictRatings() {
 inline double SVD::predictRating(uInt movieId, uInt userId, int feature, float cacheVal, bool bTrailing) const
 {
     // Get cached value for old features or default to an average
-    double sum = (cacheVal > 0) ? cacheVal : 1;
+//    double sum = (cacheVal > 0) ? cacheVal : bp->calBaselineEst(movieId, userId);
+	double sum = (cacheVal > 0) ? cacheVal : 1;
 
     // current feature's contribution to the rating
     sum += movieFeatures[feature][movieId] * userFeatures[feature][userId];
@@ -83,7 +85,7 @@ void SVD::calculateFeatures() {
 	int userId;
 	std::vector<mRatings> movieRs;
 
-	for (int f = 0; f < 6 && f < MAX_FEATURES; ++f) {
+	for (int f = 0; f < feature_num && f < MAX_FEATURES; ++f) {
 		cout << "Calculating feature " << f << endl;
 		for (int e = 0; (e < MIN_EPOCHS) || (rmse <= prevRmse - MIN_IMPROVEMENT); ++e) {
 			sq = 0;

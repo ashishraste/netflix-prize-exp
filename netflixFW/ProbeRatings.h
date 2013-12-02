@@ -1,3 +1,11 @@
+//
+//  ProbeRatings.h
+//  CS5228Project
+//
+//  Created by OrangeR on 26/11/13.
+//  Copyright (c) 2013 OrangeR. All rights reserved.
+//
+
 #ifndef CS5228Project_ProbeRatings_h
 #define CS5228Project_ProbeRatings_h
 //#include "Helper.h"
@@ -7,43 +15,6 @@
 //#include "Database.h"
 #include <string>
 #include <utility>
-/*
-typedef struct mIdIdx{
-    unsigned short mId;
-    unsigned short idx;
-    
-    mIdIdx(){
-        mId = 0;
-        idx = 0;
-    }
-    
-    mIdIdx(unsigned short m, unsigned short i)
-    {
-        mId = m;
-        idx = i;
-    }
-    
-    uInt getId()
-    {
-        return mId;
-    }
-    
-    uInt getValue()
-    {
-        return idx;
-    }
-    
-    void setId(unsigned short m)
-    {
-        mId = m;
-    }
-    void setValue(unsigned short i)
-    {
-        idx = i;
-    }
-
-}mIdIdx;
-*/
 
 class ProbeRatings:public Ratings
 {

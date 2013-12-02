@@ -2,8 +2,7 @@
 #define CS5228Project_BaselinePredictor_h
 
 #include "Algorithm.h"
-#include "KNN.h"
-
+#include "Similarity.h"
 #define SIM_FACTOR 50
 
 enum baseline_type {
@@ -13,7 +12,7 @@ enum baseline_type {
 
 class BaselinePredictor : public Algorithm {
 public:
-	BaselinePredictor(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs, baseline_type bType = GLOBAL_BASELINE);
+	BaselinePredictor(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs, baseline_type bType = NORMAL_BASELINE);
 	virtual ~BaselinePredictor();
 	double calBaselineEst(uInt movieId, uInt userId);
 	double calGBaselineEst(uInt movieId, uInt userId);

@@ -10,13 +10,14 @@
 #define CS5228Project_DataBase_h
 #include <sys/mman.h>
 #include <string>
-#include <dirent.h>
-#include <iostream>
-#include <fstream>
 #include <vector>
+
+
 #include "MovieRatings.h"
 #include "UserRatings.h"
+#include "ProbeRatings.h"
 #include "Helper.h"
+
 using namespace std;
 
 

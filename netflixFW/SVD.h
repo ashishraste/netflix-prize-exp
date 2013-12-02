@@ -2,6 +2,9 @@
 #define CS5228Project_SVD_h
 
 #include "Algorithm.h"
+#include "BaselinePredictor.h"
+#include "Similarity.h"
+class BaselinePredictor;
 
 #define MAX_RATINGS     100480508     // Ratings in entire training set (+1)
 #define MAX_CUSTOMERS   480190        // Customers in the entire training set (+1)
@@ -17,7 +20,7 @@
 
 class SVD : public Algorithm {
 public:
-	SVD(MovieRatings *mRs, ProbeRatings *pRs);
+	SVD(MovieRatings *mRs, UserRatings *uRs, ProbeRatings *pRs, uInt fNum);
 	virtual ~SVD();
 
 	double predictRatings();
@@ -27,10 +30,17 @@ public:
 	void calculateFeatures();
 	double calSvdRatings(uInt movieId, uInt userId);
 
+	BaselinePredictor *bp;
+
+	//friend class Similarity;
+    friend class SVD_Sim_M;
+    friend class SVD_Sim_U;
 private:
 	MovieRatings *mRs;
+	UserRatings *uRs;
 	ProbeRatings *pRs;
 
+    uInt feature_num;
 	float userFeatures[MAX_FEATURES][USER_NUM];   	// Array of features by user
 	float movieFeatures[MAX_FEATURES][MOVIE_NUM];  	// Array of features by movie
 	float cache[RATINGS_NUM];
